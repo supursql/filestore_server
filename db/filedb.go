@@ -10,11 +10,14 @@ import (
 func OnFileUploadFinished(meta meta.FileMeta) bool {
 
 	db := myDB.DBConn()
-
 	meta.Status = 1
-
 	if db.NewRecord(meta) {
-		db.Create(meta)
+
+		fmt.Println("1", db.HasTable(&meta))
+		fmt.Println("2", db.HasTable(&meta.FileMeta{}))
+		fmt.Println("3", db.HasTable("tbl_file"))
+
+		db.Debug().Create(meta)
 		return true
 	} else {
 		fmt.Printf("File with hash:%s has been uploaded before", meta.FileSha1)
